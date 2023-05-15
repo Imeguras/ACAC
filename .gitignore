@@ -5,3 +5,8 @@ doc/html
 *.cproject
 *.project
 *.settings
+#log
+server-*.log
+#editor 
+*.vscode
+*.code-workspace
