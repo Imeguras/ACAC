@@ -7,7 +7,7 @@ PID_Controller::PID_Controller(fs_PidFloat_t Kp, fs_PidFloat_t Ki, fs_PidFloat_t
 	s_Tunings(Kp, Ki, Kd); 
 }
 /**
-* @brief Private Constructor meant to setup everything to 0
+* @brief Constructor meant to setup everything to 0 It should not be used directly, and its only public so that it can be used in the other constructor
 */
 PID_Controller::PID_Controller(){
 	kp=0;

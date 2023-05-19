@@ -12,10 +12,7 @@
 //include odometry message
 int main(int argc, char ** argv){
 	rclcpp::init(argc, argv);
-	//rclcpp::spin(std::make_shared<ParametersClass>());
-	
 	rclcpp::spin(std::make_shared<SpacNode>());
-	
 	
 	rclcpp::shutdown();
 

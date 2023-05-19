@@ -6,23 +6,29 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+# Faz com que o programa só tome em conta um plano 2D e não irá atuar em altura nem irá considerar dados sobre esse eixo
+add_definitions(-D__FSIPLEIRIA_2D_ONLY__)
+
+# Força o uso de double precision(64 bits em vez de 32)
+# add_definitions(-D__FSIPLEIRIA_PID_DOUBLE_PRECISION__)
+
+
 find_package(ament_cmake REQUIRED)
 # ros2 
 find_package(rclcpp REQUIRED)
 # ackermann_msg
-find_package(ackermann_msgs REQUIRED)
-
-find_package(nav_msgs REQUIRED)
 
 find_package(std_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(ackermann_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
-add_executable(main src/main.cpp src/spac_node.cpp)
+add_executable(main src/main.cpp src/spac_node.cpp src/fmath.cpp src/target.cpp)
 
 #include 
-ament_target_dependencies(main rclcpp nav_msgs ackermann_msgs std_msgs)
+ament_target_dependencies(main rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs)
 
 target_include_directories(main PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -47,6 +53,8 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+# Doxygen
 
 
 ament_package()
