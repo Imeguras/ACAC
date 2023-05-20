@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(spac)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
+set(library_name spac)
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -26,44 +26,35 @@ find_package(tf2 REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
-add_executable(main src/main.cpp src/spac_node.cpp src/fmath.cpp src/target.cpp)
+add_executable(${library_name} src/main.cpp src/spac_node.cpp src/fmath.cpp src/target.cpp)
 
 #include 
-ament_target_dependencies(main rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
+ament_target_dependencies(${library_name} rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
 
 
-target_include_directories(main PUBLIC
+if(BUILD_TESTING)
+	find_package(ament_cmake_gtest REQUIRED)
+	ament_add_gtest(tst_target test/tst_target.cpp)
+	#target_include_directories(tst_target PUBLIC
+	#$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	#$<INSTALL_INTERFACE:include>
+	#)
+	ament_target_dependencies(tst_target std_msgs)
+	#target_link_libraries(tst_target ${library_name})
+endif()
+
+target_include_directories(${library_name} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(main PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(${library_name} PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
-install(TARGETS main
+install(TARGETS ${library_name}
   DESTINATION lib/${PROJECT_NAME})
 
 install(
   DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
-if(BUILD_TESTING)
-  find_package(ament_cmake_gtest REQUIRED)
-  ament_add_gtest(${PROJECT_NAME}_tst_target test/tst_target.cpp)
-  target_include_directories(${PROJECT_NAME}_tst_target PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-  #ament_target_dependencies(${PROJECT_NAME}_tst_target)
-  #target_link_libraries(${PROJECT_NAME}_tst_target ${PROJECT_NAME})
-
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
-
 # Doxygen
 
 
