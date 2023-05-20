@@ -42,3 +42,14 @@ fs_PidFloat_t PID_Controller::g_Integral(){
 fs_PidFloat_t PID_Controller::g_Derivative(){
 	return kd;
 }
+
+
+Steering_Reverse_Kinematics::Steering_Reverse_Kinematics(){
+	
+}
+fs_KinematicsFloat_t Steering_Reverse_Kinematics::track_ComputeSteeringAngle(fs_KinematicsFloat_t track_radius, fs_KinematicsFloat_t track_angle){
+	//TODO: Implement a way to transform the track radius and angle into a steering angle
+	(void)track_radius;
+	(void)track_angle;
+	return 0;
+}

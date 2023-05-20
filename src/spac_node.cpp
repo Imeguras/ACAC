@@ -30,16 +30,6 @@ SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
 
 }
 
-
-int SpacNode::startPredictRoutine(){
-	
-	
-	
-
-	return 0;
-}
-
-
 int SpacNode::s_Frequency(int freq){
 	m_frequency=freq; 
 	this->set_parameter(rclcpp::Parameter(PARAMS_FREQUENCY, m_frequency));

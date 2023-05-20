@@ -22,13 +22,15 @@ find_package(std_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ackermann_msgs REQUIRED)
+find_package(tf2 REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 add_executable(main src/main.cpp src/spac_node.cpp src/fmath.cpp src/target.cpp)
 
 #include 
-ament_target_dependencies(main rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs)
+ament_target_dependencies(main rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
+
 
 target_include_directories(main PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

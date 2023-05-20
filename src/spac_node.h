@@ -70,7 +70,6 @@ class SpacNode : public rclcpp::Node{
 	protected:
 		int m_frequency=0;
 		rclcpp::TimerBase::SharedPtr m_timer;
-		int startPredictRoutine();
 		/**
 		 * @brief These three properties are meant to be set through ros2 params and may only be set that way
 		*/

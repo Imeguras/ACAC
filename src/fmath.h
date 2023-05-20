@@ -25,4 +25,17 @@ class PID_Controller{
 		fs_PidFloat_t error, error_prev, error_sum;
 	
 };
+
+#ifdef __FSIPLEIRIA_KINEMATICS_DOUBLE_PRECISION__
+	typedef int64_t fs_KinematicsFloat_t;
+#else
+	typedef int32_t fs_KinematicsFloat_t;
+#endif
+
+class Steering_Reverse_Kinematics{
+	public:
+		
+		Steering_Reverse_Kinematics();
+		fs_KinematicsFloat_t track_ComputeSteeringAngle(fs_KinematicsFloat_t track_radius, fs_KinematicsFloat_t track_angle);
+};
 #endif // FMATH_H_
