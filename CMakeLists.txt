@@ -45,6 +45,14 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 if(BUILD_TESTING)
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(${PROJECT_NAME}_tst_target test/tst_target.cpp)
+  target_include_directories(${PROJECT_NAME}_tst_target PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+  #ament_target_dependencies(${PROJECT_NAME}_tst_target)
+  #target_link_libraries(${PROJECT_NAME}_tst_target ${PROJECT_NAME})
+
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
   # comment the line when a copyright and license is added to all source files
