@@ -33,8 +33,6 @@ class SpacNode : public rclcpp::Node{
 		SpacNode();
 		virtual ~SpacNode() = default;
 		
-
-
 		/**
 		 * @brief Get the Node Name object
 		 * 
