@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(spac)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(library_name spac)
+set(${library_name}_SOURCES src/spac_node.cpp src/fmath.cpp src/target.cpp)
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -14,6 +15,8 @@ add_definitions(-D__FSIPLEIRIA_2D_ONLY__)
 
 
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_cpplint REQUIRED)
+find_package(ament_cmake_uncrustify REQUIRED)
 # ros2 
 find_package(rclcpp REQUIRED)
 # ackermann_msg
@@ -26,11 +29,12 @@ find_package(tf2 REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
-add_library(${library_name} src/spac_node.cpp src/fmath.cpp src/target.cpp)
+
+add_library(${library_name}  ${${library_name}_SOURCES})
 
 #include 
 ament_target_dependencies(${library_name} rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
-
+ament_uncrustify(${library_name} ${${library_name}_SOURCES})
 
 if(BUILD_TESTING)
 	find_package(ament_cmake_gtest REQUIRED)

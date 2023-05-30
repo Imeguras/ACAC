@@ -13,7 +13,7 @@ TargetWaypoint::TargetWaypoint(rclcpp::Logger logger){
 
 
 
-void TargetWaypoint::predict(){
+fs_KinematicsFloat_t TargetWaypoint::predict(){
 	#ifdef __FSIPLEIRIA_2D_ONLY__
 		//Here only one rotational axis the Z axis is considered
 
@@ -35,7 +35,9 @@ void TargetWaypoint::predict(){
 		
 		fs_PidFloat_t track_angle =  m_pid_controller_angular->compute(0, angle);
 		// TODO: find a way to get the track radius
-		fs_KinematicsFloat_t steerAngle =m_steering_reverse_kinematics.track_ComputeSteeringAngle((fs_KinematicsFloat_t)0, (fs_KinematicsFloat_t)track_angle);
+		return track_angle;
+
+		//fs_KinematicsFloat_t steerAngle =m_steering_reverse_kinematics.track_ComputeSteeringAngle((fs_KinematicsFloat_t)0, (fs_KinematicsFloat_t)track_angle);
 		
 		
 

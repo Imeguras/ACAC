@@ -60,6 +60,7 @@ std::string SpacNode::g_AckermannTopic(){
 #ifdef __FSIPLEIRIA_2D_ONLY__
 	void SpacNode::waypoint_callback(const geometry_msgs::msg::Pose2D::SharedPtr msg){
 		m_target_waypoint->s_CurrentTargetWaypoint(msg);
+
 		// TODO: some logs would be nice
 	}
 #else
