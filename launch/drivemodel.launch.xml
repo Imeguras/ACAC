@@ -1,5 +1,5 @@
 <launch>
-	<node pkg="spac" exec="main" name="DriveModelNode">
+	<node pkg="spac" exec="spac" name="DriveModelNode">
 		<param from="./src/spac/demo_params.yaml"/>
 	</node>
 
