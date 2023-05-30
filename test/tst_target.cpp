@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <rclcpp/rclcpp.hpp>
 
 TEST(package_name, a_first_test)
 {

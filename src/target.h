@@ -1,6 +1,5 @@
 #ifndef TARGET_H_
 #define TARGET_H_
-#include <ackermann_msgs/msg/detail/ackermann_drive__struct.hpp>
 #include <cstdio>
 #include <string>
 #include <chrono>
@@ -11,6 +10,7 @@
 #include <ackermann_msgs/msg/ackermann_drive.hpp>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Scalar.h>
+#include <ackermann_msgs/msg/detail/ackermann_drive__struct.hpp>
 
 #include "fmath.h"
 

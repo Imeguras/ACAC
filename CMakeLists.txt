@@ -26,7 +26,7 @@ find_package(tf2 REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
-add_executable(${library_name} src/main.cpp src/spac_node.cpp src/fmath.cpp src/target.cpp)
+add_library(${library_name} src/spac_node.cpp src/fmath.cpp src/target.cpp)
 
 #include 
 ament_target_dependencies(${library_name} rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
@@ -34,18 +34,21 @@ ament_target_dependencies(${library_name} rclcpp std_msgs nav_msgs geometry_msgs
 
 if(BUILD_TESTING)
 	find_package(ament_cmake_gtest REQUIRED)
-	ament_add_gtest(tst_target test/tst_target.cpp)
-	#target_include_directories(tst_target PUBLIC
-	#$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	#$<INSTALL_INTERFACE:include>
-	#)
-	ament_target_dependencies(tst_target std_msgs)
-	#target_link_libraries(tst_target ${library_name})
+	ament_add_gtest(${library_name}_test test/tst_target.cpp)
+	ament_target_dependencies(${library_name}_test rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
+	target_link_libraries(${library_name}_test ${library_name})
+	
 endif()
 
 target_include_directories(${library_name} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+$<INSTALL_INTERFACE:include>)
+
+# create executable based on the library
+add_executable(${library_name}_node src/main.cpp src/spac_node.cpp src/fmath.cpp src/target.cpp)
+ament_target_dependencies(${library_name}_node rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
+target_link_libraries(${library_name}_node ${library_name})
+
 target_compile_features(${library_name} PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
 install(TARGETS ${library_name}
