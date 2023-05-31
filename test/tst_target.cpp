@@ -23,6 +23,19 @@ TEST(package_name, check_angle_straight){
 	fs_KinematicsFloat_t f = target.predict();
 	EXPECT_FLOAT_EQ(f, 0);
 }
+// test for 90 degrees
+TEST(package_name, check_angle_90){
+	nav_msgs::msg::Odometry odom_check_angle_90;
+
+	geometry_msgs::msg::Pose2D waypoint_check_angle_90;
+	waypoint_check_angle_90.x = 5;
+	waypoint_check_angle_90.y = 0;
+
+	TargetWaypoint target = setupAngles(odom_check_angle_90, waypoint_check_angle_90);
+	fs_KinematicsFloat_t f = target.predict();
+	EXPECT_FLOAT_EQ(f, 90);
+}
+
 #ifdef __FSIPLEIRIA_2D_ONLY__
 	TargetWaypoint setupAngles(nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint){
 		//instantiate target

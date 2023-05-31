@@ -19,6 +19,7 @@ fs_KinematicsFloat_t TargetWaypoint::predict(){
 
 		//get the angle formed between Pose2D and Odometry in radians
 		auto dot_angle=atan2(m_CurrentTargetWaypoint.y-m_CurrentOdometry.pose.pose.position.y, m_CurrentTargetWaypoint.x-m_CurrentOdometry.pose.pose.position.x);
+		
 		// blank quartenion
 		tf2::Quaternion blank;
 		
@@ -27,15 +28,18 @@ fs_KinematicsFloat_t TargetWaypoint::predict(){
 		// put the only the yaw in the current orientation
 		tf2::Vector3 axis = tf2::Vector3(0, 0, 1);
 		tf2::Quaternion current_orientation = tf2::Quaternion(axis, (tf2Scalar )m_CurrentOdometry.pose.pose.orientation.z);
-	
+		//debug axis and current_orientation
+		
+		RCLCPP_INFO((*m_logger), "axis: %f, %f, %f", axis.getX(), axis.getY(), axis.getZ());
+		
 		//for now this model works dumb ie it will always steer as quickly as possible
 		//check the angle in Z formed between blank and current_orientation in Z
 		// TODO: Implement something that takes the smoothness of the steer into account
 		tf2Scalar angle= blank.normalize().angle(current_orientation.normalize());
 		
-		fs_PidFloat_t track_angle =  m_pid_controller_angular->compute(0, angle);
+		//fs_PidFloat_t track_angle =  m_pid_controller_angular->compute(0, angle);
 		// TODO: find a way to get the track radius
-		return track_angle;
+		return angle;
 
 		//fs_KinematicsFloat_t steerAngle =m_steering_reverse_kinematics.track_ComputeSteeringAngle((fs_KinematicsFloat_t)0, (fs_KinematicsFloat_t)track_angle);
 		

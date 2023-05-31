@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(spac)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(library_name spac)
-set(${library_name}_sources src/spac_node.cpp src/fmath.cpp src/target.cpp)
+set(lib_srcs src/spac_node.cpp src/fmath.cpp src/target.cpp)
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -30,7 +30,7 @@ find_package(tf2 REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_library(${library_name}  ${${library_name}_sources})
+add_library(${library_name} ${lib_srcs})
 
 #include 
 ament_target_dependencies(${library_name} rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
@@ -42,7 +42,7 @@ if(BUILD_TESTING)
 	ament_target_dependencies(${library_name}_test rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
 	target_link_libraries(${library_name}_test ${library_name})
 else()
-	ament_uncrustify(${library_name} ${${library_name}_sources})
+	ament_uncrustify(${library_name} ${lib_srcs})
 endif()
 
 target_include_directories(${library_name} PUBLIC
@@ -51,6 +51,7 @@ $<INSTALL_INTERFACE:include>)
 
 # create executable based on the library
 add_executable(${library_name}_node src/main.cpp src/spac_node.cpp src/fmath.cpp src/target.cpp)
+
 ament_target_dependencies(${library_name}_node rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
 target_link_libraries(${library_name}_node ${library_name})
 
@@ -58,6 +59,13 @@ target_compile_features(${library_name} PUBLIC c_std_99 cxx_std_17)  # Require C
 
 install(TARGETS ${library_name}
   DESTINATION lib/${PROJECT_NAME})
+  
+install(TARGETS ${library_name}_node
+  DESTINATION lib/${PROJECT_NAME})
+# add config folder
+install(DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 install(
   DIRECTORY launch
