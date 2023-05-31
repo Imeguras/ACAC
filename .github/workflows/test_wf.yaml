@@ -13,14 +13,19 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+        ros_distribution: # Only include ROS 2 distributions, as ROS 1 does not support macOS and Windows.
+          - humble
+          - iron
+          - rolling
       fail-fast: false
     steps:
     - name: Setup ROS 2
-      uses: ros-tooling/setup-ros@0.0.15
+      uses: ros-tooling/setup-ros@v0.6
       with:
-        required-ros-distributions: humble
+        use-ros2-testing: true
+        required-ros-distributions: ${{ matrix.ros_distribution }}
     - name: Run Tests
-      uses: ros-tooling/action-ros-ci@0.0.13
+      uses: ros-tooling/action-ros-ci@v0.2
       with:
         package-name: spac
     - name: Upload Logs-
