@@ -4,19 +4,17 @@ on:
   push:
     branches:
       - master
-      - "*"
+      - actions_debug
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 jobs:
-  build-and-test:
+  build-and-test-bare-metal:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         ros_distribution: # Only include ROS 2 distributions, as ROS 1 does not support macOS and Windows.
-          - humble
-          - iron
-          - rolling
+          - humble #- iron - rolling
       fail-fast: false
     steps:
     - name: Setup ROS 2
@@ -25,9 +23,11 @@ jobs:
         use-ros2-testing: true
         required-ros-distributions: ${{ matrix.ros_distribution }}
     - name: Run Tests
-      uses: ros-tooling/action-ros-ci@v0.2
+      uses: ros-tooling/action-ros-ci@v0.3
       with:
         package-name: spac
+        target-ros2-distro: humble
+        vcs-repo-file-url: https://raw.githubusercontent.com/ros2/ros2/humble/ros2.repos
     - name: Upload Logs-
       uses: actions/upload-artifact@v1
       with:
