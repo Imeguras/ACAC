@@ -16,7 +16,7 @@ jobs:
     - name: Setup ROS 2
       uses: ros-tooling/setup-ros@0.0.15
       with:
-      required-ros-distributions: [foxy, humble, iron, rolling]
+        required-ros-distributions: humble
     - name: Run Tests
       uses: ros-tooling/action-ros-ci@0.0.13
       with:
