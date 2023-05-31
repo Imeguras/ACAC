@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(spac)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(library_name spac)
-set(${library_name}_SOURCES src/spac_node.cpp src/fmath.cpp src/target.cpp)
+set(${library_name}_sources src/spac_node.cpp src/fmath.cpp src/target.cpp)
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -30,18 +30,19 @@ find_package(tf2 REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_library(${library_name}  ${${library_name}_SOURCES})
+add_library(${library_name}  ${${library_name}_sources})
 
 #include 
 ament_target_dependencies(${library_name} rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
-ament_uncrustify(${library_name} ${${library_name}_SOURCES})
+
 
 if(BUILD_TESTING)
 	find_package(ament_cmake_gtest REQUIRED)
 	ament_add_gtest(${library_name}_test test/tst_target.cpp)
 	ament_target_dependencies(${library_name}_test rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
 	target_link_libraries(${library_name}_test ${library_name})
-	
+else()
+	ament_uncrustify(${library_name} ${${library_name}_sources})
 endif()
 
 target_include_directories(${library_name} PUBLIC
