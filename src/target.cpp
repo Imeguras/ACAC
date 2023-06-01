@@ -1,5 +1,8 @@
 #include "target.h"
 #include "fmath.h"
+#include <math.h>
+#include <iostream>
+#include <rclcpp/logging.hpp>
 
 
 
@@ -18,8 +21,14 @@ fs_KinematicsFloat_t TargetWaypoint::predict(){
 		//Here only one rotational axis the Z axis is considered
 
 		//get the angle formed between Pose2D and Odometry in radians
-		auto dot_angle=atan2(m_CurrentTargetWaypoint.y-m_CurrentOdometry.pose.pose.position.y, m_CurrentTargetWaypoint.x-m_CurrentOdometry.pose.pose.position.x);
+
+		//assuming the +Y is the nose of the car at 0 degrees
+		fs_KinematicsFloat_t x__ = m_CurrentTargetWaypoint.x-m_CurrentOdometry.pose.pose.position.x; 
+		fs_KinematicsFloat_t y__ = m_CurrentTargetWaypoint.y-m_CurrentOdometry.pose.pose.position.y;
+		fs_KinematicsFloat_t dot_angle=std::atan2(x__, y__ );
+		return dot_angle;
 		
+	
 		// blank quartenion
 		tf2::Quaternion blank;
 		
@@ -30,7 +39,6 @@ fs_KinematicsFloat_t TargetWaypoint::predict(){
 		tf2::Quaternion current_orientation = tf2::Quaternion(axis, (tf2Scalar )m_CurrentOdometry.pose.pose.orientation.z);
 		//debug axis and current_orientation
 		
-		RCLCPP_INFO((*m_logger), "axis: %f, %f, %f", axis.getX(), axis.getY(), axis.getZ());
 		
 		//for now this model works dumb ie it will always steer as quickly as possible
 		//check the angle in Z formed between blank and current_orientation in Z

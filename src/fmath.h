@@ -1,12 +1,12 @@
 #ifndef FMATH_H_
 #define FMATH_H_
 #include <cstdint>
-
-
+//#include <stdfloat>
+// TODO update compiler so we can use fixed width types. 
 #ifdef __FSIPLEIRIA_PID_DOUBLE_PRECISION__
-	typedef int64_t fs_PidFloat_t;
+	typedef long double fs_PidFloat_t;
 #else
-	typedef int32_t fs_PidFloat_t;
+	typedef float fs_PidFloat_t;
 #endif
 
 class PID_Controller{
@@ -25,11 +25,10 @@ class PID_Controller{
 		fs_PidFloat_t error, error_prev, error_sum;
 	
 };
-
 #ifdef __FSIPLEIRIA_KINEMATICS_DOUBLE_PRECISION__
-	typedef int64_t fs_KinematicsFloat_t;
+	typedef long double fs_KinematicsFloat_t;
 #else
-	typedef int32_t fs_KinematicsFloat_t;
+	typedef float fs_KinematicsFloat_t;
 #endif
 
 class Steering_Reverse_Kinematics{
