@@ -1,7 +1,10 @@
 #include "target.h"
 #include "fmath.h"
+#include <cmath>
+#include <cstdio>
 #include <math.h>
 #include <iostream>
+#include <rclcpp/logger.hpp>
 #include <rclcpp/logging.hpp>
 
 
@@ -15,53 +18,27 @@ TargetWaypoint::TargetWaypoint(rclcpp::Logger logger){
 }
 
 
-
-fs_KinematicsFloat_t TargetWaypoint::predict(){
+//I assumed the car is naturally pointed at the +Y axis 
+fs_KinematicsFloat_t TargetWaypoint::predict_trackAngle(){
 	#ifdef __FSIPLEIRIA_2D_ONLY__
-		//Here only one rotational axis the Z axis is considered
-
-		//get the angle formed between Pose2D and Odometry in radians
-
-		//assuming the +Y is the nose of the car at 0 degrees
-		fs_KinematicsFloat_t x__ = m_CurrentTargetWaypoint.x-m_CurrentOdometry.pose.pose.position.x; 
-		fs_KinematicsFloat_t y__ = m_CurrentTargetWaypoint.y-m_CurrentOdometry.pose.pose.position.y;
-		fs_KinematicsFloat_t dot_angle=std::atan2(x__, y__ );
-		return dot_angle;
 		
-	
-		// blank quartenion
-		tf2::Quaternion blank;
-		
-		blank.setRPY(0, 0, (tf2Scalar)dot_angle);
-
-		// put the only the yaw in the current orientation
-		tf2::Vector3 axis = tf2::Vector3(0, 0, 1);
-		tf2::Quaternion current_orientation = tf2::Quaternion(axis, (tf2Scalar )m_CurrentOdometry.pose.pose.orientation.z);
-		//debug axis and current_orientation
-		
-		
-		//for now this model works dumb ie it will always steer as quickly as possible
-		//check the angle in Z formed between blank and current_orientation in Z
-		// TODO: Implement something that takes the smoothness of the steer into account
-		tf2Scalar angle= blank.normalize().angle(current_orientation.normalize());
-		
-		//fs_PidFloat_t track_angle =  m_pid_controller_angular->compute(0, angle);
-		// TODO: find a way to get the track radius
-		return angle;
-
-		//fs_KinematicsFloat_t steerAngle =m_steering_reverse_kinematics.track_ComputeSteeringAngle((fs_KinematicsFloat_t)0, (fs_KinematicsFloat_t)track_angle);
-		
+		fs_KinematicsFloat_t delta_x = m_CurrentTargetWaypoint.x - m_CurrentOdometry.pose.pose.position.x;
+		fs_KinematicsFloat_t delta_y = m_CurrentTargetWaypoint.y - m_CurrentOdometry.pose.pose.position.y;
 		
 
-
-
-
-
-
+		// Due to above x and y is flipped here
+		fs_KinematicsFloat_t theta_dot = std::atan2(delta_x,delta_y);
+		return theta_dot;
 
 	#else
-		// Todo consider all axis
+		fs_KinematicsFloat_t delta_x = m_CurrentTargetWaypoint.x - m_CurrentOdometry.pose.pose.position.x;
+		fs_KinematicsFloat_t delta_y = m_CurrentTargetWaypoint.y - m_CurrentOdometry.pose.pose.position.y;
+		fs_KinematicsFloat_t delta_z = m_CurrentTargetWaypoint.z - m_CurrentOdometry.pose.pose.position.z;
+		
+		//fs_KinematicsFloat_t theta_pos = std::atan2(,);
+		return 0;
 	#endif
+
 }
 
 int TargetWaypoint::s_Odometry(const nav_msgs::msg::Odometry::SharedPtr msg){

@@ -9,32 +9,51 @@
 #include <rclcpp/rclcpp.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include "../src/target.h"
+#ifdef __FSIPLEIRIA_2D_ONLY__
 TargetWaypoint setupAngles(rclcpp::Logger logger, nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint);
+#else 
+TargetWaypoint setupAngles(rclcpp::Logger logger, nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose waypoint);
+#endif
 rclcpp::Node::SharedPtr node_;
 
 
 TEST(package_name, check_angle_straight){
+	
 	nav_msgs::msg::Odometry odom_check_angle_straight;
+	#ifdef __FSIPLEIRIA_2D_ONLY__
+		geometry_msgs::msg::Pose2D waypoint_check_angle_straight;
+		waypoint_check_angle_straight.x = 0;
+		waypoint_check_angle_straight.y = 0;
+		waypoint_check_angle_straight.theta = 0;
 
-	geometry_msgs::msg::Pose2D waypoint_check_angle_straight;
-	waypoint_check_angle_straight.x = 0;
-	waypoint_check_angle_straight.y = 0;
+	#else 
+		geometry_msgs::msg::Pose waypoint_check_angle_straight;
+		//it would make too much spaghetti... it sets things to zero
+
+
+	#endif
 	
 	TargetWaypoint target = setupAngles(node_->get_logger(), odom_check_angle_straight, waypoint_check_angle_straight);
-	fs_KinematicsFloat_t f = target.predict();
+	fs_KinematicsFloat_t f = target.predict_trackAngle();
 	
 	EXPECT_FLOAT_EQ(f, (fs_KinematicsFloat_t)0);
 }
 
 TEST(package_name, check_angle_90){
 	nav_msgs::msg::Odometry odom_check_angle_90;
-
-	geometry_msgs::msg::Pose2D waypoint_check_angle_90;
-	waypoint_check_angle_90.x = 5;
-	waypoint_check_angle_90.y = 0;
-	
+	#ifdef __FSIPLEIRIA_2D_ONLY__
+		geometry_msgs::msg::Pose2D waypoint_check_angle_90;
+		waypoint_check_angle_90.x = 5;
+		waypoint_check_angle_90.y = 0;
+	#else
+		geometry_msgs::msg::Pose waypoint_check_angle_90;
+		//set the position to 5,0,0
+		waypoint_check_angle_90.position.x = 5;
+		waypoint_check_angle_90.position.y = 0;
+		waypoint_check_angle_90.position.z = 0;
+	#endif
 	TargetWaypoint target2 = setupAngles(node_->get_logger(), odom_check_angle_90, waypoint_check_angle_90);
-	fs_KinematicsFloat_t f = target2.predict();
+	fs_KinematicsFloat_t f = target2.predict_trackAngle();
 	
 	EXPECT_FLOAT_EQ(f, (fs_KinematicsFloat_t)M_PI_2);
 

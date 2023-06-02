@@ -27,7 +27,7 @@ class TargetWaypoint{
 		virtual ~TargetWaypoint() = default;
 		ackermann_msgs::msg::AckermannDrive m_CurrentDrive;
 
-		fs_KinematicsFloat_t predict();
+		fs_KinematicsFloat_t predict_trackAngle();
 		/**
 		* @brief Set/Update the current target waypoint
 		*/
