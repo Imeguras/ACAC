@@ -56,10 +56,9 @@ TEST(tst_target, check_Shrimple_FixAngle){
 	#endif
 	TargetWaypoint target3 = setupAngles( odom_check_fixangle, irrelevant );
 	
-	fs_KinematicsFloat_t random_angle2=rand()/RAND_MAX * 2 * M_PI;
 
-	auto ret= target3.compensate_CurrentAngle(random_angle2);
-	EXPECT_FLOAT_EQ(ret, random_angle2-random_angle);
+	auto ret= target3.current_Angle();
+	EXPECT_FLOAT_EQ(ret, random_angle);
 }
 
 #ifdef __FSIPLEIRIA_2D_ONLY__

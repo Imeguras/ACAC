@@ -26,6 +26,7 @@
 #define PARAMS_TOPIC_WAYPOINT "wp_topic"
 #define PARAMS_TOPIC_ODOMETRY "odom_topic"
 #define PARAMS_TOPIC_ACKERMANN "ackermann_topic"
+#define PARAMS_TRACK_WIDTH "track_width"
 #define DRIVEMODEL_NODE_NAME "DriveModelNode"
 
 
@@ -63,11 +64,20 @@ class SpacNode : public rclcpp::Node{
 		std::string g_WaypointTopic();
 		std::string g_OdometryTopic();
 		std::string g_AckermannTopic();
+		//TODO: do a custom type for floating point bellow 
+		float g_TrackWidth();
+		
+		/**
+		* @brief Dispatches msgs for ackermann drive, this includes publishing and managing all the variables that ensure some internal quality
+		*/
+		void dispatchAckermannDrive();
+
 
 
 
 	protected:
 		int m_frequency=0;
+		float m_TrackWidth=0.0f;
 		rclcpp::TimerBase::SharedPtr m_timer;
 		/**
 		 * @brief These three properties are meant to be set through ros2 params and may only be set that way
@@ -92,6 +102,8 @@ class SpacNode : public rclcpp::Node{
 		*/
 		void odometry_callback(const nav_msgs::msg::Odometry::SharedPtr msg);
 	private: 
+		//publisher for the ackermann drive
+		rclcpp::Publisher<ackermann_msgs::msg::AckermannDrive>::SharedPtr m_ackermann_publisher;
 		TargetWaypoint * m_target_waypoint;
 };
 
