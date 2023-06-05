@@ -20,7 +20,7 @@ SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
 			m_waypoint_topic, 10, std::bind(&SpacNode::waypoint_callback, this, std::placeholders::_1));
 	#endif
 
-	m_target_waypoint = new TargetWaypoint(this->get_logger());
+	m_target_waypoint = new TargetWaypoint();
 	
 	/* ToResearch: Apaparently you can only start timers on the constructor no matter what?*/
 	RCLCPP_INFO(this->get_logger(), "Started carrot waypoint targeting routine on { %s }", __PRETTY_FUNCTION__ );

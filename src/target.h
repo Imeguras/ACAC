@@ -23,11 +23,12 @@
 
 class TargetWaypoint{
 	public: 
-		TargetWaypoint(rclcpp::Logger logger);
+		TargetWaypoint();
 		virtual ~TargetWaypoint() = default;
 		ackermann_msgs::msg::AckermannDrive m_CurrentDrive;
 
 		fs_KinematicsFloat_t predict_trackAngle();
+		fs_KinematicsFloat_t compensate_CurrentAngle(fs_KinematicsFloat_t angle);
 		/**
 		* @brief Set/Update the current target waypoint
 		*/
@@ -39,7 +40,7 @@ class TargetWaypoint{
 			int s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose::SharedPtr msg);
 		#endif
 	protected:
-		rclcpp::Logger* m_logger;
+		
 		PID_Controller* m_pid_controller;
 		PID_Controller* m_pid_controller_angular;
 		Steering_Reverse_Kinematics m_steering_reverse_kinematics;

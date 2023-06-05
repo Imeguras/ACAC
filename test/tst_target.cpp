@@ -1,23 +1,6 @@
-#include <gtest/gtest.h>
-#include <cmath>
-#include <math.h>
-#include <memory>
-#include <nav_msgs/msg/detail/odometry__struct.hpp>
-#include <geometry_msgs/msg/detail/pose2_d__struct.hpp>
-#include <rclcpp/logger.hpp>
-#include <rclcpp/node.hpp>
-#include <rclcpp/rclcpp.hpp>
-#include <nav_msgs/msg/odometry.hpp>
-#include "../src/target.h"
-#ifdef __FSIPLEIRIA_2D_ONLY__
-TargetWaypoint setupAngles(rclcpp::Logger logger, nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint);
-#else 
-TargetWaypoint setupAngles(rclcpp::Logger logger, nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose waypoint);
-#endif
-rclcpp::Node::SharedPtr node_;
+#include "tst_target.h"
 
-
-TEST(package_name, check_angle_straight){
+TEST(tst_target, check_angle_straight){
 	
 	nav_msgs::msg::Odometry odom_check_angle_straight;
 	#ifdef __FSIPLEIRIA_2D_ONLY__
@@ -33,13 +16,13 @@ TEST(package_name, check_angle_straight){
 
 	#endif
 	
-	TargetWaypoint target = setupAngles(node_->get_logger(), odom_check_angle_straight, waypoint_check_angle_straight);
+	TargetWaypoint target = setupAngles( odom_check_angle_straight, waypoint_check_angle_straight);
 	fs_KinematicsFloat_t f = target.predict_trackAngle();
 	
 	EXPECT_FLOAT_EQ(f, (fs_KinematicsFloat_t)0);
 }
 
-TEST(package_name, check_angle_90){
+TEST(tst_target, check_angle_90){
 	nav_msgs::msg::Odometry odom_check_angle_90;
 	#ifdef __FSIPLEIRIA_2D_ONLY__
 		geometry_msgs::msg::Pose2D waypoint_check_angle_90;
@@ -52,17 +35,37 @@ TEST(package_name, check_angle_90){
 		waypoint_check_angle_90.position.y = 0;
 		waypoint_check_angle_90.position.z = 0;
 	#endif
-	TargetWaypoint target2 = setupAngles(node_->get_logger(), odom_check_angle_90, waypoint_check_angle_90);
+	TargetWaypoint target2 = setupAngles( odom_check_angle_90, waypoint_check_angle_90);
 	fs_KinematicsFloat_t f = target2.predict_trackAngle();
 	
 	EXPECT_FLOAT_EQ(f, (fs_KinematicsFloat_t)M_PI_2);
 
 }
+TEST(tst_target, check_Shrimple_FixAngle){
+	//create a random msg::Odometry
+	nav_msgs::msg::Odometry odom_check_fixangle;
+	//get a random number between 0 and 2pi
+	fs_KinematicsFloat_t random_angle=rand()/RAND_MAX * 2 * M_PI;
+	//set the yaw of the quarternion to that angle
+	odom_check_fixangle.pose.pose.orientation.z = sin(random_angle/2);
+	odom_check_fixangle.pose.pose.orientation.w = cos(random_angle/2);
+	#ifdef __FSIPLEIRIA_2D_ONLY__
+	geometry_msgs::msg::Pose2D irrelevant;
+	#else
+	geometry_msgs::msg::Pose irrelevant;
+	#endif
+	TargetWaypoint target3 = setupAngles( odom_check_fixangle, irrelevant );
+	
+	fs_KinematicsFloat_t random_angle2=rand()/RAND_MAX * 2 * M_PI;
+
+	auto ret= target3.compensate_CurrentAngle(random_angle2);
+	EXPECT_FLOAT_EQ(ret, random_angle2-random_angle);
+}
 
 #ifdef __FSIPLEIRIA_2D_ONLY__
-	TargetWaypoint setupAngles(rclcpp::Logger logger, nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint){
+	TargetWaypoint setupAngles( nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint){
 		
-		TargetWaypoint target(logger);
+		TargetWaypoint target;
 		//odom at a zero state
 		nav_msgs::msg::Odometry::SharedPtr ptrOdom = std::make_shared<nav_msgs::msg::Odometry>(odom);
 		
@@ -75,10 +78,10 @@ TEST(package_name, check_angle_90){
 		
 	}
 #else
-	TargetWaypoint setupAngles(rclcpp::Logger logger, nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose waypoint){
+	TargetWaypoint setupAngles( nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose waypoint){
 	
 		
-		TargetWaypoint target(logger);
+		TargetWaypoint target;
 		//odom at a zero state
 		nav_msgs::msg::Odometry::SharedPtr ptrOdom = std::make_shared<nav_msgs::msg::Odometry>(odom);
 		
@@ -92,17 +95,3 @@ TEST(package_name, check_angle_90){
 #endif
 
 
-int main(int argc, char** argv){
-	rclcpp::init(argc, argv);
-	node_ = rclcpp::Node::make_shared("test_node_");
-	 rclcpp::spin_some(node_);
-
-
-	testing::InitGoogleTest(&argc, argv);
-	int ret = RUN_ALL_TESTS();
-	//destroy node
-	node_.reset();
-
-	rclcpp::shutdown();
-	return ret;
-}

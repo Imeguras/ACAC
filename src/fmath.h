@@ -1,6 +1,9 @@
 #ifndef FMATH_H_
 #define FMATH_H_
 #include <cstdint>
+#include "utils.h"
+#include <cmath>
+
 //#include <stdfloat>
 // TODO update compiler so we can use fixed width types. 
 #ifdef __FSIPLEIRIA_PID_DOUBLE_PRECISION__
@@ -35,6 +38,6 @@ class Steering_Reverse_Kinematics{
 	public:
 		
 		Steering_Reverse_Kinematics();
-		fs_KinematicsFloat_t track_ComputeSteeringAngle(fs_KinematicsFloat_t track_radius, fs_KinematicsFloat_t track_angle);
+		fs_KinematicsFloat_t track_ComputeSteeringAngle(fs_KinematicsFloat_t track_angle, fs_KinematicsFloat_t track_radius);
 };
 #endif // FMATH_H_

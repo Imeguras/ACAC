@@ -1,4 +1,5 @@
 #include "fmath.h"
+#include "utils.h"
 
 /**
 * @brief Public Constructor for the PID_Controller class
@@ -47,9 +48,11 @@ fs_PidFloat_t PID_Controller::g_Derivative(){
 Steering_Reverse_Kinematics::Steering_Reverse_Kinematics(){
 	
 }
-fs_KinematicsFloat_t Steering_Reverse_Kinematics::track_ComputeSteeringAngle(fs_KinematicsFloat_t track_radius, fs_KinematicsFloat_t track_angle){
-	//TODO: Implement a way to transform the track radius and angle into a steering angle
-	(void)track_radius;
-	(void)track_angle;
-	return 0;
+fs_KinematicsFloat_t Steering_Reverse_Kinematics::track_ComputeSteeringAngle(fs_KinematicsFloat_t track_angle, fs_KinematicsFloat_t track_width ){
+	fs_KinematicsFloat_t turning_radius = VOIDSTER_WHEELBASE / std::tan(track_angle);
+	fs_KinematicsFloat_t inner_angle = std::atan(VOIDSTER_WHEELBASE / (turning_radius - (track_width / 2)));
+    fs_KinematicsFloat_t outer_angle = std::atan(VOIDSTER_WHEELBASE / (turning_radius + (track_width / 2)));
+	fs_KinematicsFloat_t steering_angle=(inner_angle+outer_angle)/2;
+
+	return steering_angle;
 }
