@@ -42,7 +42,7 @@ fs_KinematicsFloat_t TargetWaypoint::predict_trackAngle(){
 */
 void TargetWaypoint::instance_CarrotControl(){
 	try{
-		
+		RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "TargetWaypoint::instance_CarrotControl() called");
 		auto theta_track = predict_trackAngle(); 
 		auto theta_steer = m_steering_reverse_kinematics.track_ComputeSteeringAngle(theta_track, m_trackWidth);
 		auto theta_current = current_Angle(); 
@@ -86,7 +86,7 @@ bool TargetWaypoint::g_isDispatcherDirty(){
 	return m_isDispatcherDirty;
 }
 int TargetWaypoint::s_throwDirtDispatcher(){
-	if(m_isDispatcherDirty){
+	if(!m_isDispatcherDirty){
 		//TODO: Log warning
 		RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "Dispatcher is dirty, this means that the dispatcher is trying to send bad data");
 		return -1;

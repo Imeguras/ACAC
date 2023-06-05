@@ -41,7 +41,7 @@ TEST(tst_target, check_angle_90){
 	EXPECT_FLOAT_EQ(f, (fs_KinematicsFloat_t)M_PI_2);
 
 }
-TEST(tst_target, check_Shrimple_FixAngle){
+TEST(tst_target, get_Shrimple_Angle){
 	//create a random msg::Odometry
 	nav_msgs::msg::Odometry odom_check_fixangle;
 	//get a random number between 0 and 2pi

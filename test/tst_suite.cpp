@@ -5,7 +5,10 @@
 #include <rclcpp/node.hpp>
 #include <rclcpp/rclcpp.hpp>
 
+
 static rclcpp::Node::SharedPtr node_;
+
+
 
 int main(int argc, char** argv){
 	rclcpp::init(argc, argv);

@@ -11,6 +11,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include "../src/target.h"
+#include "testing_utils.hpp"
 
 #ifdef __FSIPLEIRIA_2D_ONLY__
 TargetWaypoint setupAngles( nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint);

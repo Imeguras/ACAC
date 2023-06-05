@@ -8,5 +8,5 @@
 #include <rclcpp/node.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include "../src/fmath.h"
-
+#include "testing_utils.hpp"
 #endif

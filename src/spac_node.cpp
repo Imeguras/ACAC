@@ -10,7 +10,7 @@ SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
 	this->get_parameter(PARAMS_TOPIC_ODOMETRY, m_odometry_topic);
 	this->declare_parameter(PARAMS_TOPIC_ACKERMANN, "/");
 	this->get_parameter(PARAMS_TOPIC_ACKERMANN, m_ackermann_topic);
-	this->declare_parameter(PARAMS_TRACK_WIDTH, 2); 
+	this->declare_parameter(PARAMS_TRACK_WIDTH, 3.0); 
 	this->get_parameter(PARAMS_TRACK_WIDTH, m_TrackWidth);
 	
 	//create publisher for ackermann drive
@@ -33,11 +33,22 @@ SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
 	auto interval = std::chrono::duration<double>(1.0 / m_frequency);
 	this->m_timer = this->create_wall_timer(interval, std::bind(&TargetWaypoint::instance_CarrotControl, m_target_waypoint));
 
+
+	RCLCPP_INFO(this->get_logger(), "Started ackermann drive dispatch routine on { %s }", __PRETTY_FUNCTION__ );
+	//TODO fix the auto... 
+	this->m_timer_publisher= this->create_wall_timer(interval, std::bind(&SpacNode::dispatchAckermannDrive, this));
+
+	
+
+
+
 }
 void SpacNode::dispatchAckermannDrive(){
 	if(m_target_waypoint->g_isDispatcherDirty()){
+		//RCLCPP_INFO(this->get_logger(), "Dispatching ackermann drive on { %s }", __PRETTY_FUNCTION__); 
 		m_ackermann_publisher->publish(m_target_waypoint->g_dirtyDispatcherMail());
 		m_target_waypoint->s_throwDirtDispatcher(); 
+		
 	}
 }
 int SpacNode::s_Frequency(int freq){

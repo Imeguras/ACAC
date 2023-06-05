@@ -79,6 +79,7 @@ class SpacNode : public rclcpp::Node{
 		int m_frequency=0;
 		float m_TrackWidth=0.0f;
 		rclcpp::TimerBase::SharedPtr m_timer;
+		rclcpp::TimerBase::SharedPtr m_timer_publisher;
 		/**
 		 * @brief These three properties are meant to be set through ros2 params and may only be set that way
 		*/
