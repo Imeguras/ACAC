@@ -1,4 +1,5 @@
 #include "tst_target.h"
+#include <cmath>
 
 TEST(tst_target, check_angle_straight){
 	
@@ -61,6 +62,32 @@ TEST(tst_target, get_Shrimple_Angle){
 	EXPECT_FLOAT_EQ(ret, random_angle);
 }
 
+TEST(tst_target, testCarrotRoutine){
+	//create a random msg::Odometry
+	nav_msgs::msg::Odometry odom_check_carrot;
+	//get a random number between 0 and 2pi
+	fs_KinematicsFloat_t random_angle=rand()/RAND_MAX * 2 * M_PI;
+	//set the yaw of the quarternion to that angle
+	odom_check_carrot.pose.pose.orientation.z = sin(random_angle/2);
+	odom_check_carrot.pose.pose.orientation.w = cos(random_angle/2);
+	#ifdef __FSIPLEIRIA_2D_ONLY__
+		geometry_msgs::msg::Pose2D waypoint_check_carrot;
+		waypoint_check_carrot.x = 1;
+		waypoint_check_carrot.y = 8;
+	#else
+		geometry_msgs::msg::Pose waypoint_check_carrot;
+		//set the position to 5,0,0
+		waypoint_check_carrot.position.x = 5;
+		waypoint_check_carrot.position.y = 0;
+		waypoint_check_carrot.position.z = 0;
+	#endif
+	TargetWaypoint target4 = setupAngles( odom_check_carrot, waypoint_check_carrot );
+	
+	target4.instance_CarrotControl();
+
+	EXPECT_FLOAT_EQ(FIVECUTFLOATING(0.037306499), FIVECUTFLOATING(target4.g_dirtyDispatcherMail().steering_angle));
+	
+}
 #ifdef __FSIPLEIRIA_2D_ONLY__
 	TargetWaypoint setupAngles( nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint){
 		

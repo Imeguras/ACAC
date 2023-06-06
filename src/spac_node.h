@@ -6,6 +6,8 @@
 //#define __FSIPLEIRIA_2D_ONLY__
 
 #include <cstdio>
+#include <geometry_msgs/msg/detail/pose2_d__struct.hpp>
+#include <nav_msgs/msg/detail/odometry__struct.hpp>
 #include <string>
 #include <rclcpp/node.hpp>
 #include <rclcpp/rclcpp.hpp>
@@ -80,6 +82,7 @@ class SpacNode : public rclcpp::Node{
 		float m_TrackWidth=0.0f;
 		rclcpp::TimerBase::SharedPtr m_timer;
 		rclcpp::TimerBase::SharedPtr m_timer_publisher;
+		TargetWaypoint * m_target_waypoint;
 		/**
 		 * @brief These three properties are meant to be set through ros2 params and may only be set that way
 		*/
@@ -103,9 +106,16 @@ class SpacNode : public rclcpp::Node{
 		*/
 		void odometry_callback(const nav_msgs::msg::Odometry::SharedPtr msg);
 	private: 
+			rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr m_odometry_sub;
+		#ifdef __FSIPLEIRIA_2D_ONLY__
+			rclcpp::Subscription<geometry_msgs::msg::Pose2D>::SharedPtr m_waypoint_sub;
+		#else
+			rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr m_waypoint_sub;	
+		#endif 
 		//publisher for the ackermann drive
 		rclcpp::Publisher<ackermann_msgs::msg::AckermannDrive>::SharedPtr m_ackermann_publisher;
-		TargetWaypoint * m_target_waypoint;
+		
+		
 };
 
 #endif

@@ -1,4 +1,7 @@
 #include "spac_node.h"
+#include "target.h"
+#include <nav_msgs/msg/detail/odometry__struct.hpp>
+#include <rclcpp/logging.hpp>
 
 
 SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
@@ -12,43 +15,43 @@ SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
 	this->get_parameter(PARAMS_TOPIC_ACKERMANN, m_ackermann_topic);
 	this->declare_parameter(PARAMS_TRACK_WIDTH, 3.0); 
 	this->get_parameter(PARAMS_TRACK_WIDTH, m_TrackWidth);
-	
+	m_target_waypoint = new TargetWaypoint(m_TrackWidth);
 	//create publisher for ackermann drive
 	m_ackermann_publisher = this->create_publisher<ackermann_msgs::msg::AckermannDrive>(m_ackermann_topic, 10);
 
 	//subscribe to topic PARAMS_TOPIC_WAYPOINT of type Pose2d
 	#ifdef __FSIPLEIRIA_2D_ONLY__
-		auto m_waypoint_sub = this->create_subscription<geometry_msgs::msg::Pose2D>(
+		 m_waypoint_sub = this->create_subscription<geometry_msgs::msg::Pose2D>(
 			m_waypoint_topic, 10, std::bind(&SpacNode::waypoint_callback, this, std::placeholders::_1));
 	#else 
-		auto m_waypoint_sub = this->create_subscription<geometry_msgs::msg::Pose>(
+		 m_waypoint_sub = this->create_subscription<geometry_msgs::msg::Pose>(
 			m_waypoint_topic, 10, std::bind(&SpacNode::waypoint_callback, this, std::placeholders::_1));
 	#endif
-
+	 m_odometry_sub = this->create_subscription<nav_msgs::msg::Odometry>(m_odometry_topic,10, std::bind(&SpacNode::odometry_callback, this, std::placeholders::_1));
 	//TODO: some asserts should be ran through to get here as this is a critical step in operational security
-	m_target_waypoint = new TargetWaypoint(m_TrackWidth);
 	
+	auto interval = std::chrono::duration<double>(1.0 / m_frequency);
+
 	/* ToResearch: Apaparently you can only start timers on the constructor no matter what?*/
 	RCLCPP_INFO(this->get_logger(), "Started carrot waypoint targeting routine on { %s }", __PRETTY_FUNCTION__ );
-	auto interval = std::chrono::duration<double>(1.0 / m_frequency);
-	this->m_timer = this->create_wall_timer(interval, std::bind(&TargetWaypoint::instance_CarrotControl, m_target_waypoint));
+	this->m_timer = this->create_wall_timer(interval, [this ]()-> void { this->m_target_waypoint->instance_CarrotControl();});
 
 
 	RCLCPP_INFO(this->get_logger(), "Started ackermann drive dispatch routine on { %s }", __PRETTY_FUNCTION__ );
-	//TODO fix the auto... 
-	this->m_timer_publisher= this->create_wall_timer(interval, std::bind(&SpacNode::dispatchAckermannDrive, this));
+	this->m_timer_publisher= this->create_wall_timer(interval, [this]()-> void {this->dispatchAckermannDrive();});
 
 	
 
 
 
 }
+
 void SpacNode::dispatchAckermannDrive(){
-	if(m_target_waypoint->g_isDispatcherDirty()){
+	if(this->m_target_waypoint->g_isDispatcherDirty()){
 		//RCLCPP_INFO(this->get_logger(), "Dispatching ackermann drive on { %s }", __PRETTY_FUNCTION__); 
-		m_ackermann_publisher->publish(m_target_waypoint->g_dirtyDispatcherMail());
-		m_target_waypoint->s_throwDirtDispatcher(); 
-		
+		this->m_ackermann_publisher->publish(this->m_target_waypoint->g_dirtyDispatcherMail());
+		this->m_target_waypoint->s_throwDirtDispatcher(); 
+
 	}
 }
 int SpacNode::s_Frequency(int freq){
@@ -88,6 +91,10 @@ float SpacNode::g_TrackWidth(){
 	RCLCPP_ERROR(this->get_logger(), "Track width is not valid. Check your parameters");
 	return -1.0f; 
 	
+}
+void SpacNode::odometry_callback(const nav_msgs::msg::Odometry::SharedPtr msg){
+	RCLCPP_DEBUG(this->get_logger(), "%f", msg.get()->pose.pose.position.x);
+	m_target_waypoint->s_CurrentOdometry(msg);
 }
 #ifdef __FSIPLEIRIA_2D_ONLY__
 	void SpacNode::waypoint_callback(const geometry_msgs::msg::Pose2D::SharedPtr msg){

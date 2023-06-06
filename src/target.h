@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <string>
 #include <chrono>
+#include <algorithm>
 #include <rclcpp/node.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/logger.hpp>
@@ -10,7 +11,6 @@
 #include <ackermann_msgs/msg/ackermann_drive.hpp>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Scalar.h>
-#include <ackermann_msgs/msg/detail/ackermann_drive__struct.hpp>
 #include "fmath.h"
 #include <ackermann_msgs/msg/detail/ackermann_drive__builder.hpp>
 #include <ackermann_msgs/msg/detail/ackermann_drive__struct.hpp>
@@ -23,6 +23,9 @@
 #include <rclcpp/logging.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <tf2/LinearMath/Matrix3x3.h>
+#include <rclcpp/logging.hpp>
+#include "utils.h"
+		
 
 
 #ifdef __FSIPLEIRIA_2D_ONLY__
@@ -57,8 +60,9 @@ class TargetWaypoint{
 		#else
 			int s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose::SharedPtr msg);
 		#endif
+		int s_CurrentOdometry(const nav_msgs::msg::Odometry::SharedPtr msg);
 	protected:
-		bool m_isDispatcherDirty=false;
+		bool m_isDispatcherDirty=true;
 		ackermann_msgs::msg::AckermannDrive m_DispatcherMailBox; 
 		PID_Controller* m_pid_controller;
 		PID_Controller* m_pid_controller_angular;

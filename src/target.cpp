@@ -1,5 +1,6 @@
 #include "target.h"
-#include <ackermann_msgs/msg/detail/ackermann_drive__struct.hpp>
+#include "fmath.h"
+#include <nav_msgs/msg/detail/odometry__struct.hpp>
 #include <rclcpp/logging.hpp>
 
 
@@ -41,15 +42,18 @@ fs_KinematicsFloat_t TargetWaypoint::predict_trackAngle(){
 * @details This function is meant to be called in a asynchronous loop and it will return the steering angle to be applied to the vehicle
 */
 void TargetWaypoint::instance_CarrotControl(){
+	//RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "TargetWaypoint::instance_CarrotControl() called");
+	//return;c
 	try{
-		RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "TargetWaypoint::instance_CarrotControl() called");
+
 		auto theta_track = predict_trackAngle(); 
 		auto theta_steer = m_steering_reverse_kinematics.track_ComputeSteeringAngle(theta_track, m_trackWidth);
 		auto theta_current = current_Angle(); 
 		//angle that is supposed to be applied to the abstract "steering wheel"
 		auto imperative_angle = m_pid_controller_angular->compute(theta_steer, theta_current);
-		
-
+		//clamp imperative angle to -MAX_STEERING and MAX_STEERING
+		imperative_angle = std::clamp(imperative_angle, (fs_PidFloat_t)-MAX_STEERING,(fs_PidFloat_t) MAX_STEERING);
+		//RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "TargetWaypoint::instance_CarrotControl() imperative_angle: %f", imperative_angle);
 
 		m_DispatcherMailBox = ackermann_msgs::msg::AckermannDrive();
 		m_DispatcherMailBox.steering_angle = imperative_angle;
@@ -64,8 +68,9 @@ void TargetWaypoint::instance_CarrotControl(){
 	}catch(...){
 		// Makes shure the dispatcher wont look for bad data
 		m_isDispatcherDirty = false; 
+		
 		//TODO: Log error
-
+	
 	}
 	
 
@@ -123,6 +128,7 @@ int TargetWaypoint::s_TrackWidth(float track_width){
 
 #ifdef __FSIPLEIRIA_2D_ONLY__
 	int TargetWaypoint::s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose2D::SharedPtr msg){
+		
 		m_CurrentTargetWaypoint=*msg;
 		return 0;
 	}
@@ -133,3 +139,9 @@ int TargetWaypoint::s_TrackWidth(float track_width){
 		return 0;
 	}
 #endif
+int TargetWaypoint::s_CurrentOdometry(const nav_msgs::msg::Odometry::SharedPtr msg){
+	
+	m_CurrentOdometry=*msg;
+
+	return 0;
+}

@@ -9,7 +9,7 @@ endif()
 
 # Faz com que o programa só tome em conta um plano 2D e não irá atuar em altura nem irá considerar dados sobre esse eixo
 add_definitions(-D__FSIPLEIRIA_2D_ONLY__)
-
+add_definitions(-DVOIDSTER)
 # Força o uso de double precision(64 bits em vez de 32)
 # add_definitions(-D__FSIPLEIRIA_PID_DOUBLE_PRECISION__)
 
