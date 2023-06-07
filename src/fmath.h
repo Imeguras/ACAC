@@ -15,7 +15,7 @@
 class PID_Controller{
 	public:
 		PID_Controller(fs_PidFloat_t Kp, fs_PidFloat_t Ki, fs_PidFloat_t Kd);
-		
+		fs_PidFloat_t computeWithRateChange(fs_PidFloat_t setpoint, fs_PidFloat_t input, fs_PidFloat_t *output);
 		fs_PidFloat_t compute(fs_PidFloat_t setpoint, fs_PidFloat_t input);
 		int s_Tunings(fs_PidFloat_t Kp, fs_PidFloat_t Ki, fs_PidFloat_t Kd);
 		fs_PidFloat_t g_Proportion();
@@ -25,7 +25,8 @@ class PID_Controller{
 	protected:
 		PID_Controller();
 		fs_PidFloat_t kp, ki, kd;
-		fs_PidFloat_t error, error_prev, error_sum;
+		
+		fs_PidFloat_t calls, output_past, error, error_prev, error_prevtwo, error_sum;
 	
 };
 #ifdef __FSIPLEIRIA_KINEMATICS_DOUBLE_PRECISION__

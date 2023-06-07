@@ -54,6 +54,8 @@ void TargetWaypoint::instance_CarrotControl(){
 		//clamp imperative angle to -MAX_STEERING and MAX_STEERING
 		imperative_angle = std::clamp(imperative_angle, (fs_PidFloat_t)-MAX_STEERING,(fs_PidFloat_t) MAX_STEERING);
 		//RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "TargetWaypoint::instance_CarrotControl() imperative_angle: %f", imperative_angle);
+	
+		
 
 		m_DispatcherMailBox = ackermann_msgs::msg::AckermannDrive();
 		m_DispatcherMailBox.steering_angle = imperative_angle;
@@ -72,9 +74,10 @@ void TargetWaypoint::instance_CarrotControl(){
 		//TODO: Log error
 	
 	}
-	
+}
 
-	
+fs_KinematicsFloat_t TargetWaypoint::fly_Throught(){
+	//calculate derivative of the current pid functions
 
 }
 ackermann_msgs::msg::AckermannDrive TargetWaypoint:: g_dirtyDispatcherMail(){

@@ -1,4 +1,6 @@
 #include "tst_target.h"
+#include "gtest/gtest.h"
+#include "gtest/internal/gtest-internal.h"
 #include <cmath>
 
 TEST(tst_target, check_angle_straight){
@@ -88,6 +90,15 @@ TEST(tst_target, testCarrotRoutine){
 	EXPECT_FLOAT_EQ(FIVECUTFLOATING(0.037306499), FIVECUTFLOATING(target4.g_dirtyDispatcherMail().steering_angle));
 	
 }
+TEST(tst_target, testCarrotRoutineAcceleration){
+	//TODO Implement a tabulated Acceleration full track test
+	GTEST_SKIP_("Implement a tabulated Acceleration full track test");
+}
+TEST(tst_target, testCarrotRoutineSkidPad){
+	//TODO Implement a SkidPad tabulated full track test
+	GTEST_SKIP_("TODO Implement a tabulated SkidPad full track test");
+}
+
 #ifdef __FSIPLEIRIA_2D_ONLY__
 	TargetWaypoint setupAngles( nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint){
 		
