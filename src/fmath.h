@@ -25,8 +25,8 @@ class PID_Controller{
 	protected:
 		PID_Controller();
 		fs_PidFloat_t kp, ki, kd;
-		
-		fs_PidFloat_t calls, output_past, error, error_prev, error_prevtwo, error_sum;
+		//error_prevtwo, calls
+		fs_PidFloat_t output_past, error, error_prev, error_sum;
 	
 };
 #ifdef __FSIPLEIRIA_KINEMATICS_DOUBLE_PRECISION__

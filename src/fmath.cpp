@@ -16,9 +16,9 @@ PID_Controller::PID_Controller(){
 	kd=0;
 	error=0;
 	error_prev=0;
-	error_prevtwo=0;
+	//error_prevtwo=0;
 	error_sum=0;
-	calls=0;
+	//calls=0;
 	output_past=0; 
 	
 }
@@ -27,19 +27,21 @@ fs_PidFloat_t PID_Controller::compute(fs_PidFloat_t setpoint, fs_PidFloat_t inpu
 	error_sum+=error;
 	fs_PidFloat_t output=kp*error+ki*error_sum+kd*(error-error_prev);
 	output_past=output;
-	error_prevtwo=error_prev;
+	//error_prevtwo=error_prev;
 	error_prev=error;
-	calls++;
+	//calls++;
 	return output;
 }
 //found it here https://twcontrols.com/lessons/pid-velocity-vs-positional-equation-studio-5000-pide-instruction
 fs_PidFloat_t PID_Controller::computeWithRateChange(fs_PidFloat_t setpoint, fs_PidFloat_t input, fs_PidFloat_t *output){
 	fs_PidFloat_t outputf=output_past;
-
+	
 	fs_PidFloat_t cv= compute(setpoint, input);
 	*output=cv;
-	fs_PidFloat_t ret = outputf + kp*((error-error_prev)) + ki*(error)+kd*(error+(-2*error_prev)+error_prevtwo);
-	return ret; 
+
+	return *output-outputf;
+	/*fs_PidFloat_t ret = kp + ki*(calls+1)+kd*(error+(-2*error_prev)+error_prevtwo);
+	return ret; */
 
 }
 /**

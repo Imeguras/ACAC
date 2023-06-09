@@ -24,25 +24,35 @@ TEST(tst_fmath, precalculated_steeringAngle){
 	EXPECT_FLOAT_EQ(FIVECUTFLOATING(steering_angle), FIVECUTFLOATING(0.446192));
 
 }
-TEST(tst_fmath, derivative_pid){
+TEST(tst_fmath, rate_change_pid){
 	//from 0 to 100
-	
+	const int size=10;
 	PID_Controller pid(1.0f, 1.0f, 1.0f);
-	fs_PidFloat_t cvs[10]; 
-	fs_PidFloat_t cvr[10];
+	fs_PidFloat_t cvs[size]; 
+	fs_PidFloat_t cvr[size];
 	cvs[0]=0; 
 	cvr[0]=0;
-	for (int i=0; i<10;i++) {
+
+	
+	for (int i=0; i<size;i++) {
 		auto f = i-1; 
-		if(f>0){
+		
+		if(f>=0){
 			cvr[i]=pid.computeWithRateChange(100, cvs[f], &cvs[i]);
 		}else{
-			cvr[i]=pid.computeWithRateChange(100, cvs[0], &cvs[0]);
+			cvr[i]=pid.computeWithRateChange(100, cvs[0], &cvs[i]);
 		}
-		RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "%f; %f\n", cvs[i], cvr[i]);
+		
 	}
-	
-	GTEST_FAIL();	
+	//iterate through size and see if cvs[i]-cvs[i-1] is the same as cvs[i-1}]
+	for (int i=0; i<size;i++) {
+		auto f = i-1; 
+		auto ret = cvs[i]-cvs[f];
+		if(f>=0){
+
+			EXPECT_FLOAT_EQ(FIVECUTFLOATING(ret), FIVECUTFLOATING(cvr[i]));
+		}
+	}
 	//EXPECT_FLOAT_EQ(FIVECUTFLOATING(f), FIVECUTFLOATING(expected));
 }
 TEST(tst_fmath, tabulated_pid){
