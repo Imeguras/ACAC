@@ -1,5 +1,6 @@
 #include "target.h"
 #include "fmath.h"
+#include <cmath>
 #include <nav_msgs/msg/detail/odometry__struct.hpp>
 #include <rclcpp/logging.hpp>
 
@@ -53,11 +54,24 @@ void TargetWaypoint::instance_CarrotControl(){
 		auto imperative_angle = m_pid_controller_angular->compute(theta_steer, theta_current);
 		//clamp imperative angle to -MAX_STEERING and MAX_STEERING
 		imperative_angle = std::clamp(imperative_angle, (fs_PidFloat_t)-MAX_STEERING,(fs_PidFloat_t) MAX_STEERING);
-		//RCLCPP_DEBUG(rclcpp::get_logger("rclcpp"), "TargetWaypoint::instance_CarrotControl() imperative_angle: %f", imperative_angle);
-	
+		
+		
+		
+		#ifdef __FSIPLEIRIA_2D_ONLY__
+			fs_KinematicsFloat_t __distance = std::sqrt(std::pow(m_CurrentTargetWaypoint.x - m_CurrentOdometry.pose.pose.position.x,2) + std::pow(m_CurrentTargetWaypoint.y - m_CurrentOdometry.pose.pose.position.y,2));
+		
+		#else
+			//TODO bellow was copy pasted
+			fs_KinematicsFloat_t distance = std::sqrt(std::pow(m_CurrentTargetWaypoint.x - m_CurrentOdometry.pose.pose.position.x,2) + std::pow(m_CurrentTargetWaypoint.y - m_CurrentOdometry.pose.pose.position.y,2));
+		#endif
+		auto speed = fly_Throught(__distance, theta_track);
+		m_pid_controller->compute(speed, m_CurrentOdometry.twist.twist.linear.x);
+		speed = std::clamp(speed, (fs_PidFloat_t)-TERMINAL_SPEED,(fs_PidFloat_t) TERMINAL_SPEED);
 		
 
+
 		m_DispatcherMailBox = ackermann_msgs::msg::AckermannDrive();
+		m_DispatcherMailBox.speed = speed;
 		m_DispatcherMailBox.steering_angle = imperative_angle;
 		
 		//for now lets keep it simple, this makes it as fast as possible
@@ -76,9 +90,11 @@ void TargetWaypoint::instance_CarrotControl(){
 	}
 }
 
-fs_KinematicsFloat_t TargetWaypoint::fly_Throught(){
-	//calculate derivative of the current pid functions
-
+fs_KinematicsFloat_t TargetWaypoint::fly_Throught(fs_KinematicsFloat_t distance, fs_KinematicsFloat_t track_angle){
+	//this is just to deal with the PID 
+	std::clamp(distance, (fs_PidFloat_t)-1*DISTANCE_MAX, (fs_PidFloat_t)DISTANCE_MAX); 
+	return distance * std::pow(std::cos(track_angle),2);
+	//cosine track angle * distance
 }
 ackermann_msgs::msg::AckermannDrive TargetWaypoint:: g_dirtyDispatcherMail(){
 	//This may look "optimizable" but the reason its like this is to keep a error by default approach 

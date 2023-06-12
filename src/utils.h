@@ -13,6 +13,11 @@
 #ifdef VOIDSTER
 	#define WHEELBASE 1.550f
 	#define MAX_STEERING (2*M_PI/9)
+	#define TERMINAL_SPEED 144.0f
+	//TODO if mission have different safety and objectives then there should be more macros
+	#define DISTANCE_MAX 80.0f
+	
+	
 #endif
 #ifdef ANT
 	#define WHEELBASE 1.550f
