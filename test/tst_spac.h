@@ -1,3 +1,8 @@
+/** ==========================================
+* @title:  Spac Operational Test Suite
+* @author: João Vieira
+* @date:   2023-06-14
+==========================================**/
 
 #ifndef TST_SPAC_H_
 #define TST_SPAC_H_

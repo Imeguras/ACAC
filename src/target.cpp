@@ -1,3 +1,10 @@
+/** ==========================================
+* @title: Target Class
+* @class: Its the class that implements the single instance behaviour spac ought to have.
+* @author: João Vieira
+* @date:   2023-06-14
+========================================== **/
+
 #include "target.h"
 #include "fmath.h"
 #include <cmath>
@@ -48,7 +55,7 @@ void TargetWaypoint::instance_CarrotControl(){
 	try{
 
 		auto theta_track = predict_trackAngle(); 
-		auto theta_steer = m_steering_reverse_kinematics.track_ComputeSteeringAngle(theta_track, m_trackWidth);
+		auto theta_steer = m_Inverse_Kinematics.track_ComputeSteeringAngle(theta_track, m_trackWidth);
 		auto theta_current = current_Angle(); 
 		//angle that is supposed to be applied to the abstract "steering wheel"
 		auto imperative_angle = m_pid_controller_angular->compute(theta_steer, theta_current);

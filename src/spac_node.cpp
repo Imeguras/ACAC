@@ -1,3 +1,10 @@
+/** ==========================================
+* @title: Spac Node Class
+* @class: This class is meant to be the interface with ros2 functionalities as such it derives node, Here you will find all the boilerplate for node common node behaviour.
+* @author: João Vieira
+* @date:   2023-06-14
+========================================== **/
+
 #include "spac_node.h"
 #include "target.h"
 #include <nav_msgs/msg/detail/odometry__struct.hpp>

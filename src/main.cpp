@@ -1,3 +1,10 @@
+/** ==========================================
+* @title: Main Class
+* @class: The main class for a profile environment context. 
+* @author: João Vieira
+* @date:   2023-06-14
+========================================== **/
+
 #include <cstdio>
 #include <memory>
 #include <rclcpp/executors.hpp>

@@ -1,3 +1,9 @@
+/** ==========================================
+* @title:  Target Class Test Suite
+* @author: João Vieira
+* @date:   2023-06-14
+==========================================**/
+
 #ifndef TST_TARGET_H_
 #define TST_TARGET_H_
 #include <gtest/gtest.h>

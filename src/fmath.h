@@ -1,3 +1,10 @@
+/** ==========================================
+* @title: FMath Header File
+* @description: Contains generic math functions and classes
+* @author: João Vieira
+* @date:   2023-06-14
+========================================== **/
+
 #ifndef FMATH_H_
 #define FMATH_H_
 #include <cstdint>
@@ -12,6 +19,10 @@
 	typedef float fs_PidFloat_t;
 #endif
 
+/**
+* @class PID_Controller
+* @brief Provides a discrete implementation of the PID Control Algorithm
+**/
 class PID_Controller{
 	public:
 		PID_Controller(fs_PidFloat_t Kp, fs_PidFloat_t Ki, fs_PidFloat_t Kd);
@@ -35,10 +46,14 @@ class PID_Controller{
 	typedef float fs_KinematicsFloat_t;
 #endif
 
-class Steering_Reverse_Kinematics{
+/**
+* @class PID_Controller
+* @brief Provides a discrete implementation of the PID Control Algorithm
+**/
+class Inverse_Kinematics{
 	public:
 		
-		Steering_Reverse_Kinematics();
+		Inverse_Kinematics();
 		fs_KinematicsFloat_t track_ComputeSteeringAngle(fs_KinematicsFloat_t track_angle, fs_KinematicsFloat_t track_radius);
 };
 #endif // FMATH_H_

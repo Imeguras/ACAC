@@ -1,9 +1,16 @@
+/** ==========================================
+* @title: Utilities
+* @class: This class serves to aid the other classes in the project by providing pre-processed constants and functionalities
+* @author: João Vieira
+* @date:   2023-06-14
+========================================== **/
+
 #ifndef UTILS_H_
 #define UTILS_H_
 
 
 /**
-* @class These macros are supposed to be constants for the vehicle dimensions 
+* 
 */
 
 

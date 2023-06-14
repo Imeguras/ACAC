@@ -1,3 +1,9 @@
+/** ==========================================
+* @title: Target Class
+* @class: Its the class that implements the single instance behaviour spac ought to have.
+* @author: João Vieira
+* @date:   2023-06-14
+========================================== **/
 #ifndef TARGET_H_
 #define TARGET_H_
 #include <cstdio>
@@ -67,7 +73,7 @@ class TargetWaypoint{
 		ackermann_msgs::msg::AckermannDrive m_DispatcherMailBox; 
 		PID_Controller* m_pid_controller;
 		PID_Controller* m_pid_controller_angular;
-		Steering_Reverse_Kinematics m_steering_reverse_kinematics;
+		Inverse_Kinematics m_Inverse_Kinematics;
 		float m_trackWidth=0.0f;
 		fs_PidFloat_t ks_p=(fs_PidFloat_t)0.1, ks_i=(fs_PidFloat_t)0.1, ks_d=(fs_PidFloat_t)0.1;
 		fs_PidFloat_t kd_p=(fs_PidFloat_t)0.1, kd_i=(fs_PidFloat_t)0.1, kd_d=(fs_PidFloat_t)0.1;
