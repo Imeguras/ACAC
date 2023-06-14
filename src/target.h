@@ -45,6 +45,9 @@ class TargetWaypoint{
 	public: 
 		TargetWaypoint(float track_width);
 		TargetWaypoint();
+		//used for c_TargetWaypoint
+		TargetWaypoint(const TargetWaypoint &target);
+		
 		virtual ~TargetWaypoint() = default;
 		ackermann_msgs::msg::AckermannDrive m_CurrentDrive;
 
@@ -56,18 +59,20 @@ class TargetWaypoint{
 		bool g_isDispatcherDirty();
 		int s_throwDirtDispatcher();
 		void instance_CarrotControl();
-		/**
-		* @brief Set/Update the current target waypoint
-		*/
-		int s_Odometry(const nav_msgs::msg::Odometry::SharedPtr msg);
+		
 		int s_TrackWidth(const float trackWidth);
+		float g_TrackWidth();
 
+		
 		#ifdef __FSIPLEIRIA_2D_ONLY__
 			int s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose2D::SharedPtr msg);
+			geometry_msgs::msg::Pose2D g_CurrentTargetWaypoint();
 		#else
 			int s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose::SharedPtr msg);
+			geometry_msgs::msg::Pose g_CurrentTargetWaypoint();
 		#endif
 		int s_CurrentOdometry(const nav_msgs::msg::Odometry::SharedPtr msg);
+		nav_msgs::msg::Odometry g_CurrentOdometry();
 	protected:
 		bool m_isDispatcherDirty=true;
 		ackermann_msgs::msg::AckermannDrive m_DispatcherMailBox; 

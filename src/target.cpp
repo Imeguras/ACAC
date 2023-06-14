@@ -21,7 +21,14 @@ TargetWaypoint::TargetWaypoint(){
 TargetWaypoint::TargetWaypoint(float track_width):TargetWaypoint(){
 	s_TrackWidth(track_width);
 }
-
+TargetWaypoint::TargetWaypoint(const TargetWaypoint &target){
+	m_CurrentTargetWaypoint = target.m_CurrentTargetWaypoint;
+	m_CurrentOdometry = target.m_CurrentOdometry;
+	m_CurrentDrive = target.m_CurrentDrive;
+	m_trackWidth = target.m_trackWidth;
+	m_pid_controller = target.m_pid_controller;
+	m_pid_controller_angular = target.m_pid_controller_angular;
+}
 //I assumed the car is naturally pointed at the +Y axis 
 fs_KinematicsFloat_t TargetWaypoint::predict_trackAngle(){
 	#ifdef __FSIPLEIRIA_2D_ONLY__
@@ -136,10 +143,6 @@ fs_KinematicsFloat_t TargetWaypoint::current_Angle(){
 
 }
 
-int TargetWaypoint::s_Odometry(const nav_msgs::msg::Odometry::SharedPtr msg){
-	m_CurrentOdometry=*msg;
-	return 0;
-}
 int TargetWaypoint::s_TrackWidth(float track_width){
 	if(track_width>0){
 		m_trackWidth=track_width;
@@ -151,6 +154,10 @@ int TargetWaypoint::s_TrackWidth(float track_width){
 	return -1;
 	
 }
+float TargetWaypoint::g_TrackWidth(){
+	return m_trackWidth;
+}
+
 
 #ifdef __FSIPLEIRIA_2D_ONLY__
 	int TargetWaypoint::s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose2D::SharedPtr msg){
@@ -158,11 +165,17 @@ int TargetWaypoint::s_TrackWidth(float track_width){
 		m_CurrentTargetWaypoint=*msg;
 		return 0;
 	}
-	
+	geometry_msgs::msg::Pose2D TargetWaypoint::g_CurrentTargetWaypoint(){
+		return m_CurrentTargetWaypoint;
+	}
+
 #else
 	int TargetWaypoint::s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose::SharedPtr msg){
 		m_CurrentTargetWaypoint=*msg;
 		return 0;
+	}
+	geometry_msgs::msg::Pose TargetWaypoint::g_CurrentTargetWaypoint(){
+		return m_CurrentTargetWaypoint;
 	}
 #endif
 int TargetWaypoint::s_CurrentOdometry(const nav_msgs::msg::Odometry::SharedPtr msg){
@@ -170,4 +183,7 @@ int TargetWaypoint::s_CurrentOdometry(const nav_msgs::msg::Odometry::SharedPtr m
 	m_CurrentOdometry=*msg;
 
 	return 0;
+}
+nav_msgs::msg::Odometry TargetWaypoint::g_CurrentOdometry(){
+	return m_CurrentOdometry;
 }

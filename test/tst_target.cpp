@@ -118,7 +118,7 @@ TEST(tst_target, testCarrotRoutineSkidPad){
 		//odom at a zero state
 		nav_msgs::msg::Odometry::SharedPtr ptrOdom = std::make_shared<nav_msgs::msg::Odometry>(odom);
 		
-		target.s_Odometry(ptrOdom);
+		target.s_CurrentOdometry(ptrOdom);
 
 		geometry_msgs::msg::Pose2D::SharedPtr ptrWayp = std::make_shared<geometry_msgs::msg::Pose2D>(waypoint);
 
@@ -134,7 +134,7 @@ TEST(tst_target, testCarrotRoutineSkidPad){
 		//odom at a zero state
 		nav_msgs::msg::Odometry::SharedPtr ptrOdom = std::make_shared<nav_msgs::msg::Odometry>(odom);
 		
-		target.s_Odometry(ptrOdom);
+		target.s_CurrentOdometry(ptrOdom);
 
 		geometry_msgs::msg::Pose::SharedPtr ptrWayp = std::make_shared<geometry_msgs::msg::Pose>(waypoint);
 

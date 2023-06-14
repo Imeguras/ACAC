@@ -42,6 +42,7 @@
 class SpacNode : public rclcpp::Node{
 	public:
 		SpacNode();
+
 		virtual ~SpacNode() = default;
 		
 		/**
@@ -73,15 +74,19 @@ class SpacNode : public rclcpp::Node{
 		std::string g_WaypointTopic();
 		std::string g_OdometryTopic();
 		std::string g_AckermannTopic();
+
 		//TODO: do a custom type for floating point bellow 
 		float g_TrackWidth();
-		
+		/**
+		* @brief a safe way to retrieve inner Target mainly used for unit testing
+		*/
+		TargetWaypoint c_TargetWaypoint();
 		/**
 		* @brief Dispatches msgs for ackermann drive, this includes publishing and managing all the variables that ensure some internal quality
 		*/
 		void dispatchAckermannDrive();
-
-
+		
+	
 
 
 	protected:

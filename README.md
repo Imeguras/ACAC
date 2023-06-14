@@ -10,7 +10,7 @@ The launch file has a parameter file hardcoded this is a major issue with this p
 
 ## Setup ["native"]
 
-The package requires diagnostic-updater, geographic_info, ackermann_msg, and angles package
+The package requires diagnostic-updater, geographic_info, ackermann_msg, and angles package as such you will have to do a rosdep install
 
 ## Setup [Arch based]
 

@@ -10,7 +10,6 @@
 #include <nav_msgs/msg/detail/odometry__struct.hpp>
 #include <rclcpp/logging.hpp>
 
-
 SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
 	this->declare_parameter(PARAMS_FREQUENCY, 0);
 	this->get_parameter(PARAMS_FREQUENCY, m_frequency);
@@ -53,6 +52,12 @@ SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
 
 }
 
+
+TargetWaypoint SpacNode::c_TargetWaypoint(){
+	//clone target waypoint
+	return TargetWaypoint(*this->m_target_waypoint);
+
+}
 void SpacNode::dispatchAckermannDrive(){
 	if(this->m_target_waypoint->g_isDispatcherDirty()){
 		//RCLCPP_INFO(this->get_logger(), "Dispatching ackermann drive on { %s }", __PRETTY_FUNCTION__); 
@@ -115,5 +120,6 @@ void SpacNode::odometry_callback(const nav_msgs::msg::Odometry::SharedPtr msg){
 		// TODO: some logs would be nice
 	}
 #endif
+
 
 
