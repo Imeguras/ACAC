@@ -38,7 +38,7 @@ ament_target_dependencies(${library_name} rclcpp std_msgs nav_msgs geometry_msgs
 
 if(BUILD_TESTING)
 	find_package(ament_cmake_gtest REQUIRED)
-	ament_add_gtest(${library_name}_test test/tst_suite.cpp test/tst_target.cpp test/tst_fmath.cpp)
+	ament_add_gtest(${library_name}_test test/tst_suite.cpp test/tst_spac.cpp test/tst_target.cpp test/tst_fmath.cpp)
 	ament_target_dependencies(${library_name}_test rclcpp std_msgs nav_msgs geometry_msgs ackermann_msgs tf2)
 	target_link_libraries(${library_name}_test ${library_name})
 	# export RCUTILS_LOGGING_USE_STDOUT=1
