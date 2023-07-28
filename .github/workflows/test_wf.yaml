@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - dev
       - actions_debug
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
