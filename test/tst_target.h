@@ -19,7 +19,7 @@
 #include "../src/target.h"
 #include "testing_utils.hpp"
 
-#ifdef __FSIPLEIRIA_2D_ONLY__
+#ifdef __LART_2D_ONLY__
 TargetWaypoint setupAngles( nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint);
 #else 
 TargetWaypoint setupAngles( nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose waypoint);

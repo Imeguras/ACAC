@@ -13,7 +13,7 @@
 
 //#include <stdfloat>
 // TODO update compiler so we can use fixed width types. 
-#ifdef __FSIPLEIRIA_PID_DOUBLE_PRECISION__
+#ifdef __LART_PID_DOUBLE_PRECISION__
 	typedef long double fs_PidFloat_t;
 #else
 	typedef float fs_PidFloat_t;
@@ -40,7 +40,7 @@ class PID_Controller{
 		fs_PidFloat_t output_past, error, error_prev, error_sum;
 	
 };
-#ifdef __FSIPLEIRIA_KINEMATICS_DOUBLE_PRECISION__
+#ifdef __LART_KINEMATICS_DOUBLE_PRECISION__
 	typedef long double fs_KinematicsFloat_t;
 #else
 	typedef float fs_KinematicsFloat_t;

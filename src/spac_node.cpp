@@ -26,7 +26,7 @@ SpacNode::SpacNode() : Node(DRIVEMODEL_NODE_NAME){
 	m_ackermann_publisher = this->create_publisher<ackermann_msgs::msg::AckermannDrive>(m_ackermann_topic, 10);
 
 	//subscribe to topic PARAMS_TOPIC_WAYPOINT of type Pose2d
-	#ifdef __FSIPLEIRIA_2D_ONLY__
+	#ifdef __LART_2D_ONLY__
 		 m_waypoint_sub = this->create_subscription<geometry_msgs::msg::Pose2D>(
 			m_waypoint_topic, 10, std::bind(&SpacNode::waypoint_callback, this, std::placeholders::_1));
 	#else 
@@ -108,7 +108,7 @@ void SpacNode::odometry_callback(const nav_msgs::msg::Odometry::SharedPtr msg){
 	RCLCPP_DEBUG(this->get_logger(), "%f", msg.get()->pose.pose.position.x);
 	m_target_waypoint->s_CurrentOdometry(msg);
 }
-#ifdef __FSIPLEIRIA_2D_ONLY__
+#ifdef __LART_2D_ONLY__
 	void SpacNode::waypoint_callback(const geometry_msgs::msg::Pose2D::SharedPtr msg){
 		m_target_waypoint->s_CurrentTargetWaypoint(msg);
 
