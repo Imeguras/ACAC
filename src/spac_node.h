@@ -10,7 +10,7 @@
 /**
 * @brief Serve para indicar se o modelo tem em consideração um plano ou um espaço. <b> É suposto ser definido no cmake para evitar dependências circulares </b>
 */
-//#define __FSIPLEIRIA_2D_ONLY__
+//#define __LART_2D_ONLY__
 
 #include <cstdio>
 #include <geometry_msgs/msg/detail/pose2_d__struct.hpp>
@@ -23,7 +23,7 @@
 #include <ackermann_msgs/msg/ackermann_drive.hpp>
 #include <chrono>
 
-#ifdef __FSIPLEIRIA_2D_ONLY__
+#ifdef __LART_2D_ONLY__
 	#include <geometry_msgs/msg/pose2_d.hpp>
 #else 
 	#include <geometry_msgs/msg/pose.hpp>
@@ -106,7 +106,7 @@ class SpacNode : public rclcpp::Node{
 		 * 
 		 * @param msg 
 		*/
-		#ifdef __FSIPLEIRIA_2D_ONLY__
+		#ifdef __LART_2D_ONLY__
 			void waypoint_callback(const geometry_msgs::msg::Pose2D::SharedPtr msg);
 		#else
 			void waypoint_callback(const geometry_msgs::msg::Pose::SharedPtr msg);
@@ -119,7 +119,7 @@ class SpacNode : public rclcpp::Node{
 		void odometry_callback(const nav_msgs::msg::Odometry::SharedPtr msg);
 	private: 
 			rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr m_odometry_sub;
-		#ifdef __FSIPLEIRIA_2D_ONLY__
+		#ifdef __LART_2D_ONLY__
 			rclcpp::Subscription<geometry_msgs::msg::Pose2D>::SharedPtr m_waypoint_sub;
 		#else
 			rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr m_waypoint_sub;	

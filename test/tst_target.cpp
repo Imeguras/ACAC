@@ -13,7 +13,7 @@
 TEST(tst_target, check_angle_straight){
 	
 	nav_msgs::msg::Odometry odom_check_angle_straight;
-	#ifdef __FSIPLEIRIA_2D_ONLY__
+	#ifdef __LART_2D_ONLY__
 		geometry_msgs::msg::Pose2D waypoint_check_angle_straight;
 		waypoint_check_angle_straight.x = 0;
 		waypoint_check_angle_straight.y = 0;
@@ -34,7 +34,7 @@ TEST(tst_target, check_angle_straight){
 // Same as above but with a 90 degree turn 
 TEST(tst_target, check_angle_90){
 	nav_msgs::msg::Odometry odom_check_angle_90;
-	#ifdef __FSIPLEIRIA_2D_ONLY__
+	#ifdef __LART_2D_ONLY__
 		geometry_msgs::msg::Pose2D waypoint_check_angle_90;
 		waypoint_check_angle_90.x = 5;
 		waypoint_check_angle_90.y = 0;
@@ -60,7 +60,7 @@ TEST(tst_target, get_Shrimple_Angle){
 	//set the yaw of the quarternion to that angle
 	odom_check_fixangle.pose.pose.orientation.z = sin(random_angle/2);
 	odom_check_fixangle.pose.pose.orientation.w = cos(random_angle/2);
-	#ifdef __FSIPLEIRIA_2D_ONLY__
+	#ifdef __LART_2D_ONLY__
 	geometry_msgs::msg::Pose2D irrelevant;
 	#else
 	geometry_msgs::msg::Pose irrelevant;
@@ -80,7 +80,7 @@ TEST(tst_target, testCarrotRoutine){
 	//set the yaw of the quarternion to that angle
 	odom_check_carrot.pose.pose.orientation.z = sin(random_angle/2);
 	odom_check_carrot.pose.pose.orientation.w = cos(random_angle/2);
-	#ifdef __FSIPLEIRIA_2D_ONLY__
+	#ifdef __LART_2D_ONLY__
 		geometry_msgs::msg::Pose2D waypoint_check_carrot;
 		waypoint_check_carrot.x = 1;
 		waypoint_check_carrot.y = 8;
@@ -111,7 +111,7 @@ TEST(tst_target, testCarrotRoutineSkidPad){
 /**
 * @brief These are meant to make the testing code less spaghetti
 **/
-#ifdef __FSIPLEIRIA_2D_ONLY__
+#ifdef __LART_2D_ONLY__
 	TargetWaypoint setupAngles( nav_msgs::msg::Odometry odom, geometry_msgs::msg::Pose2D waypoint){
 		
 		TargetWaypoint target;

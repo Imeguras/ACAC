@@ -34,7 +34,7 @@
 		
 
 
-#ifdef __FSIPLEIRIA_2D_ONLY__
+#ifdef __LART_2D_ONLY__
 	#include <geometry_msgs/msg/pose2_d.hpp>
 #else 
 	#include <geometry_msgs/msg/pose.hpp>
@@ -64,7 +64,7 @@ class TargetWaypoint{
 		float g_TrackWidth();
 
 		
-		#ifdef __FSIPLEIRIA_2D_ONLY__
+		#ifdef __LART_2D_ONLY__
 			int s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose2D::SharedPtr msg);
 			geometry_msgs::msg::Pose2D g_CurrentTargetWaypoint();
 		#else
@@ -83,7 +83,7 @@ class TargetWaypoint{
 		fs_PidFloat_t ks_p=(fs_PidFloat_t)0.1, ks_i=(fs_PidFloat_t)0.1, ks_d=(fs_PidFloat_t)0.1;
 		fs_PidFloat_t kd_p=(fs_PidFloat_t)0.1, kd_i=(fs_PidFloat_t)0.1, kd_d=(fs_PidFloat_t)0.1;
 		nav_msgs::msg::Odometry m_CurrentOdometry;
-		#ifdef __FSIPLEIRIA_2D_ONLY__
+		#ifdef __LART_2D_ONLY__
 			geometry_msgs::msg::Pose2D m_CurrentTargetWaypoint;
 		#else
 			geometry_msgs::msg::Pose m_CurrentTargetWaypoint;
