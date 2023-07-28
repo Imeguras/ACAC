@@ -31,7 +31,7 @@ TargetWaypoint::TargetWaypoint(const TargetWaypoint &target){
 }
 //I assumed the car is naturally pointed at the +Y axis 
 fs_KinematicsFloat_t TargetWaypoint::predict_trackAngle(){
-	#ifdef __FSIPLEIRIA_2D_ONLY__
+	#ifdef __LART_2D_ONLY__
 		
 		fs_KinematicsFloat_t delta_x = m_CurrentTargetWaypoint.x - m_CurrentOdometry.pose.pose.position.x;
 		fs_KinematicsFloat_t delta_y = m_CurrentTargetWaypoint.y - m_CurrentOdometry.pose.pose.position.y;
@@ -71,7 +71,7 @@ void TargetWaypoint::instance_CarrotControl(){
 		
 		
 		
-		#ifdef __FSIPLEIRIA_2D_ONLY__
+		#ifdef __LART_2D_ONLY__
 			fs_KinematicsFloat_t __distance = std::sqrt(std::pow(m_CurrentTargetWaypoint.x - m_CurrentOdometry.pose.pose.position.x,2) + std::pow(m_CurrentTargetWaypoint.y - m_CurrentOdometry.pose.pose.position.y,2));
 		
 		#else
@@ -159,7 +159,7 @@ float TargetWaypoint::g_TrackWidth(){
 }
 
 
-#ifdef __FSIPLEIRIA_2D_ONLY__
+#ifdef __LART_2D_ONLY__
 	int TargetWaypoint::s_CurrentTargetWaypoint(const geometry_msgs::msg::Pose2D::SharedPtr msg){
 		
 		m_CurrentTargetWaypoint=*msg;
