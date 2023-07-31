@@ -2,7 +2,7 @@
 * @title: Utilities
 * @class: This class serves to aid the other classes in the project by providing pre-processed constants and functionalities
 * @author: João Vieira
-* @date:   2023-06-14
+* @brief Last Updated:   2023-07-31
 ========================================== **/
 
 #ifndef UTILS_H_
