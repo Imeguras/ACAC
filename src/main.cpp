@@ -1,8 +1,8 @@
 /** ==========================================
 * @title: Main Class
-* @class: The main class for a profile environment context. 
+* @description: The main class for a profile environment context. 
 * @author: João Vieira
-* @date:   2023-06-14
+* @brief Last Updated:   2023-07-31
 ========================================== **/
 
 #include <cstdio>

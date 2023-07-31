@@ -1,8 +1,9 @@
 /** ==========================================
 * @title: Spac Node Class
-* @class: This class is meant to be the interface with ros2 functionalities as such it derives node, Here you will find all the boilerplate for node common node behaviour.
+* @class: SpacNode
+* @description: This class is meant to be the interface with ros2 functionalities as such it derives node, Here you will find all the boilerplate for node common node behaviour.
 * @author: João Vieira
-* @date:   2023-06-14
+* @brief Last Updated:   2023-07-31
 ========================================== **/
 
 #ifndef SPAC_NODE_H_
