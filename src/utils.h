@@ -1,6 +1,6 @@
 /** ==========================================
 * @title: Utilities
-* @class: This class serves to aid the other classes in the project by providing pre-processed constants and functionalities
+* @description: This class serves to aid the other classes in the project by providing pre-processed constants and functionalities
 * @author: João Vieira
 * @brief Last Updated:   2023-07-31
 ========================================== **/

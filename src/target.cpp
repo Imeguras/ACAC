@@ -1,7 +1,8 @@
 /** ==========================================
 * @title: Target Class
-* @class: Its the class that implements the single instance behaviour spac ought to have.
+* @class: TargetWaypoint.
 * @author: João Vieira
+* @description: Its the class that implements the single instance behaviour spac ought to have
 * @brief Last Updated:   2023-07-31
 ========================================== **/
 
