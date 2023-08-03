@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>spac</name>
-  <version>0.0.0</version>
-  <description>A simple Drive Model Algorithm based on PID and linear</description>
+  <name>acac</name>
+  <version>0.0.1</version>
+  <description>Acac is a more complex version of https://github.com/FSLART/spac</description>
   <maintainer email="joaovieira@ieee.org">Imeguras</maintainer>
   <license>TODO: License declaration</license>
 
